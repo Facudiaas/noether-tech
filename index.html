@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- ============================================================
+       NOETHER TECH — Página de ventas de electrónica premium
+       ============================================================
+       GUÍA RÁPIDA DE PERSONALIZACIÓN:
+       • Busca los comentarios "✏️ EDITAR:" para cada sección
+       • Productos y precios: sección id="productos"
+       • Estadísticas: busca data-target=""
+       • Colores: variables CSS en :root (--accent, --black, etc.)
+       • WhatsApp: variable WHATSAPP_NUMBER en el <script> al final
+       ============================================================ -->
+  <title>NOETHER TECH — Electrónica Premium</title>
+
+  <!--
+    ✏️ FUENTES ACTUALES:
+      · Display (títulos grandes): "Bebas Neue" — condensada, impacto máximo
+      · UI (botones, etiquetas, nav): "Outfit" — geométrica moderna, muy legible
+    Paletas y fuentes anteriores guardadas como comentarios en el CSS (:root).
+  -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /*
+      ✏️ PALETA DE COLORES ACTUAL: Carbón cálido + ámbar
+        --accent      → naranja ámbar
+        --accent-light → durazno suave
+        --accent-dim  → naranja quemado oscuro
+        --black       → fondo principal negro profundo
+        --dark/2/3    → capas de gris muy oscuro
+        --white       → blanco humo suave para textos
+
+      Paletas anteriores (por si querés volver):
+        Dorada original:  --accent:#c9a84c; --accent-light:#e8cc80; --accent-dim:#7a6230; --black:#080808;
+        Teal/cian:        --accent:#4fd1c5; --accent-light:#81e6d9; --accent-dim:#2c7a73; --black:#060810;
+        Carmesí:          --accent:#e63946; --accent-light:#ff6b74; --accent-dim:#7a1a21; --black:#080808;
+        Violeta:          --accent:#a855f7; --accent-light:#d8b4fe; --accent-dim:#581c87; --black:#09090b;
+    */
+    /*
+      PALETA ACTIVA: PLATA
+      Para cambiar manualmente a otra paleta, reemplazá los valores de abajo:
+
+      DORADA:   --accent:#c9a84c; --accent-light:#e8cc80; --accent-dim:#7a6230; --black:#080808; --dark:#111111; --dark2:#1a1a1a; --dark3:#222222; --white:#f5f2ec; --gray:#888888;
+      CARMESÍ:  --accent:#e63946; --accent-light:#ff6b74; --accent-dim:#7a1a21; --black:#080808; --dark:#101010; --dark2:#181818; --dark3:#202020; --white:#f0eeeb; --gray:#888888;
+      VIOLETA:  --accent:#a855f7; --accent-light:#d8b4fe; --accent-dim:#581c87; --black:#09090b; --dark:#111113; --dark2:#18181b; --dark3:#27272a; --white:#fafaf9; --gray:#a1a1aa;
+      ÁMBAR:    --accent:#f97316; --accent-light:#fdba74; --accent-dim:#7c2d12; --black:#0c0a09; --dark:#1c1917; --dark2:#292524; --dark3:#44403c; --white:#fef3e8; --gray:#a8a29e;
+      CIAN:     --accent:#06b6d4; --accent-light:#67e8f9; --accent-dim:#164e63; --black:#020617; --dark:#0c1024; --dark2:#121829; --dark3:#1a2235; --white:#ecfeff; --gray:#94a3b8;
+      ROSA:     --accent:#ec4899; --accent-light:#f9a8d4; --accent-dim:#831843; --black:#0d0010; --dark:#130018; --dark2:#1a0022; --dark3:#26002e; --white:#fdf2f8; --gray:#c084fc;
+      ESMERALDA:--accent:#10b981; --accent-light:#6ee7b7; --accent-dim:#064e3b; --black:#030712; --dark:#0d1117; --dark2:#161b27; --dark3:#1e2636; --white:#f0fdf4; --gray:#94a3b8;
+    */
+    :root {
+      --accent:       #cbd5e1;
+      --accent-light: #f1f5f9;
+      --accent-dim:   #475569;
+      --black: #050505;
+      --dark:  #0f0f0f;
+      --dark2: #171717;
+      --dark3: #222222;
+      --white: #f8fafc;
+      --gray:  #94a3b8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CURSOR */
+    .cursor {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      pointer-events: none;
+    }
+    .cursor-dot {
+      width: 6px; height: 6px; background: var(--accent);
+      border-radius: 50%; position: absolute;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(203,213,225,0.18);
+      border-radius: 50%; position: absolute;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.2s, height 0.2s;
+    }
+    body:has(a:hover) .cursor-ring,
+    body:has(button:hover) .cursor-ring {
+      width: 56px; height: 56px;
+      border-color: var(--accent);
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; opacity: 0.35;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 24px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(5,5,5,0.97), transparent);
+      backdrop-filter: blur(2px);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; font-weight: 300; letter-spacing: 6px;
+      color: var(--accent); text-decoration: none;
+    }
+    .nav-logo span { font-style: italic; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--white);
+      font-size: 0.7rem; letter-spacing: 3px; font-weight: 300;
+      opacity: 0.7; transition: opacity 0.3s, color 0.3s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--accent); }
+    .nav-cta {
+      font-size: 0.65rem; letter-spacing: 3px; font-weight: 300;
+      border: 1px solid var(--accent-dim); color: var(--accent);
+      background: transparent; padding: 10px 24px;
+      cursor: none; transition: all 0.3s;
+    }
+    .nav-cta:hover { background: var(--accent); color: var(--black); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; position: relative;
+      display: flex; align-items: center;
+      padding: 0 60px; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 70% at 70% 50%, rgba(203,213,225,0.07) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 60% at 30% 20%, rgba(203,213,225,0.04) 0%, transparent 60%);
+    }
+    .hero-line {
+      position: absolute; left: 50%; top: 0; bottom: 0;
+      width: 1px; background: linear-gradient(to bottom, transparent, rgba(203,213,225,0.12), transparent);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 600px; }
+    .hero-eyebrow {
+      font-size: 0.65rem; letter-spacing: 6px; color: var(--accent);
+      font-weight: 300; margin-bottom: 28px;
+      display: flex; align-items: center; gap: 16px;
+      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 40px; height: 1px; background: var(--accent);
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 8vw, 7rem);
+      font-weight: 400; line-height: 0.95; letter-spacing: 5px;
+      margin-bottom: 28px;
+      opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--accent); }
+    .hero-subtitle {
+      font-size: 0.75rem; letter-spacing: 2px; font-weight: 200;
+      color: rgba(245,242,236,0.55); line-height: 2;
+      max-width: 420px; margin-bottom: 48px;
+      opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .hero-actions {
+      display: flex; gap: 20px; align-items: center;
+      opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+    }
+    .btn-primary {
+      background: var(--accent); color: var(--black);
+      border: none; padding: 16px 40px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem; letter-spacing: 4px; font-weight: 400;
+      cursor: none; transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .btn-primary::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(255,255,255,0.15);
+      transform: translateX(-100%); transition: transform 0.4s;
+    }
+    .btn-primary:hover::after { transform: translateX(0); }
+    .btn-secondary {
+      background: transparent; color: var(--white);
+      border: none; padding: 16px 0;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem; letter-spacing: 4px; font-weight: 200;
+      cursor: none; transition: color 0.3s;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .btn-secondary::after {
+      content: '→'; font-size: 1rem; transition: transform 0.3s;
+    }
+    .btn-secondary:hover { color: var(--accent); }
+    .btn-secondary:hover::after { transform: translateX(6px); }
+
+    /* HERO DEVICE MOCKUP */
+    .hero-device {
+      position: absolute; right: 6%; top: 50%;
+      transform: translateY(-50%);
+      width: min(420px, 40vw);
+      opacity: 0; animation: fadeLeft 1s 0.5s forwards;
+    }
+    .device-glow {
+      position: absolute; inset: -40px;
+      background: radial-gradient(ellipse, rgba(203,213,225,0.09), transparent 70%);
+      pointer-events: none;
+    }
+    .device-frame {
+      background: linear-gradient(145deg, #1e1e1e, #111);
+      border-radius: 40px; padding: 12px;
+      border: 1px solid rgba(203,213,225,0.12);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04) inset;
+      position: relative;
+    }
+    .device-screen {
+      background: linear-gradient(135deg, #050505, #0f0f0f);
+      border-radius: 30px; aspect-ratio: 9/19;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+      overflow: hidden; position: relative; gap: 0; padding-bottom: 20px;
+    }
+    .device-screen::before {
+      content: ''; position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 80px; height: 28px;
+      background: #050505; border-radius: 0 0 18px 18px;
+      z-index: 2;
+    }
+    .device-img-wrap {
+      width: 80%; flex: 1; min-height: 0;
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      cursor: none;
+    }
+    .device-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform 0.5s;
+    }
+    .device-img-wrap:hover img { transform: scale(1.04); }
+    .device-img-placeholder {
+      width: 100%; height: 100%; min-height: 120px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      color: var(--gray); transition: background 0.3s;
+    }
+    .device-img-placeholder:hover { background: rgba(255,255,255,0.03); }
+    .device-img-placeholder svg { opacity: 0.3; transition: opacity 0.3s; }
+    .device-img-placeholder:hover svg { opacity: 0.6; }
+    .device-img-placeholder span {
+      font-size: 0.48rem; letter-spacing: 3px; opacity: 0.45; text-align: center;
+    }
+    .device-img-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .device-img-wrap:hover .device-img-overlay { opacity: 1; }
+    .device-img-change {
+      font-size: 0.5rem; letter-spacing: 3px; color: var(--white);
+      border: 1px solid rgba(255,255,255,0.3); padding: 7px 14px;
+      background: transparent; cursor: none; font-family: 'Outfit', sans-serif;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .device-img-change:hover { border-color: var(--accent); color: var(--accent); }
+    .device-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; letter-spacing: 3px; color: var(--accent); font-weight: 300;
+    }
+    .device-sublabel {
+      font-size: 0.6rem; letter-spacing: 2px; color: var(--gray); font-weight: 200;
+    }
+    .device-bar {
+      width: 60%; height: 1px; background: linear-gradient(to right, transparent, var(--accent-dim), transparent);
+      margin: 8px 0;
+    }
+    .device-specs {
+      display: flex; gap: 20px;
+    }
+    .spec { text-align: center; }
+    .spec-val { font-size: 0.8rem; color: var(--white); letter-spacing: 1px; }
+    .spec-key { font-size: 0.5rem; letter-spacing: 2px; color: var(--gray); margin-top: 2px; }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      border-top: 1px solid rgba(203,213,225,0.07);
+      border-bottom: 1px solid rgba(203,213,225,0.07);
+      padding: 14px 0; overflow: hidden; position: relative; z-index: 2;
+    }
+    .marquee-track {
+      display: flex; gap: 0; white-space: nowrap;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-item {
+      font-size: 0.6rem; letter-spacing: 4px; color: var(--accent-dim);
+      font-weight: 300; padding: 0 40px; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .marquee-sep { color: var(--accent); opacity: 0.4; }
+
+    /* SECTION COMMONS */
+    section { position: relative; z-index: 2; }
+    .section-label {
+      font-size: 0.6rem; letter-spacing: 6px; color: var(--accent);
+      font-weight: 300; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .section-label::before {
+      content: ''; width: 30px; height: 1px; background: var(--accent);
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 400; letter-spacing: 4px; line-height: 1.1;
+    }
+
+    /* PRODUCTS */
+    .products { padding: 120px 60px; }
+    .products-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 70px;
+    }
+    .products-header p {
+      font-size: 0.7rem; letter-spacing: 1px; color: var(--gray);
+      max-width: 260px; line-height: 1.9; font-weight: 200;
+    }
+    .products-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    }
+    .product-card {
+      background: var(--dark2);
+      border: 1px solid rgba(255,255,255,0.04);
+      padding: 48px 40px; position: relative; overflow: hidden;
+      transition: border-color 0.4s, background 0.4s;
+      cursor: none;
+    }
+    .product-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      transform: scaleX(0); transition: transform 0.5s;
+    }
+    .product-card:hover { border-color: rgba(203,213,225,0.12); background: var(--dark3); }
+    .product-card:hover::after { transform: scaleX(1); }
+    .product-card.featured {
+      grid-row: span 2;
+      background: linear-gradient(145deg, var(--dark3), var(--dark2));
+      border-color: rgba(203,213,225,0.12);
+    }
+    .product-badge {
+      display: inline-block; font-size: 0.5rem; letter-spacing: 3px;
+      color: var(--black); background: var(--accent); padding: 5px 14px;
+      margin-bottom: 32px; font-weight: 400;
+    }
+    .product-emoji { font-size: 2.8rem; display: block; margin-bottom: 24px;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
+    }
+    .product-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem; font-weight: 400; letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+    .product-model {
+      font-size: 0.6rem; letter-spacing: 3px; color: var(--gray);
+      font-weight: 200; margin-bottom: 20px;
+    }
+    .product-desc {
+      font-size: 0.68rem; color: rgba(245,242,236,0.45);
+      line-height: 2; font-weight: 200; margin-bottom: 32px;
+    }
+    .product-price-row {
+      display: flex; align-items: baseline; gap: 12px; margin-bottom: 28px;
+    }
+    .product-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; font-weight: 300; color: var(--accent);
+    }
+    .product-price-old {
+      font-size: 0.8rem; color: var(--gray); text-decoration: line-through;
+      font-weight: 200;
+    }
+    .product-features {
+      list-style: none; margin-bottom: 36px;
+    }
+    .product-features li {
+      font-size: 0.62rem; letter-spacing: 2px; color: rgba(245,242,236,0.5);
+      padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; gap: 10px; font-weight: 200;
+    }
+    .product-features li::before { content: '◆'; font-size: 0.4rem; color: var(--accent); }
+    .btn-card {
+      width: 100%; background: transparent;
+      border: 1px solid rgba(203,213,225,0.13); color: var(--accent);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.6rem; letter-spacing: 4px; font-weight: 300;
+      padding: 14px; cursor: none; transition: all 0.3s;
+    }
+    .btn-card:hover { background: var(--accent); color: var(--black); }
+
+    /* STATS */
+    .stats {
+      padding: 80px 60px;
+      background: linear-gradient(to right, var(--dark2), var(--dark), var(--dark2));
+      border-top: 1px solid rgba(203,213,225,0.07);
+      border-bottom: 1px solid rgba(203,213,225,0.07);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      text-align: center; gap: 2px;
+    }
+    .stat-item { padding: 20px 0; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem; font-weight: 400; color: var(--accent);
+      display: block; line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.6rem; letter-spacing: 4px; color: var(--gray);
+      font-weight: 200; margin-top: 10px;
+    }
+
+    /* FEATURES */
+    .features { padding: 120px 60px; }
+    .features-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center; margin-top: 80px;
+    }
+    .feature-list { display: flex; flex-direction: column; gap: 0; }
+    .feature-item {
+      padding: 32px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+      cursor: none; transition: all 0.3s;
+    }
+    .feature-item:hover .feature-num { color: var(--accent); }
+    .feature-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.75rem; color: var(--accent-dim);
+      letter-spacing: 3px; margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+    .feature-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; font-weight: 400; letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+    .feature-text {
+      font-size: 0.65rem; letter-spacing: 1px; color: var(--gray);
+      font-weight: 200; line-height: 2;
+    }
+    .features-visual {
+      position: relative; aspect-ratio: 4/5;
+      background: linear-gradient(145deg, var(--dark2), var(--dark3));
+      border: 1px solid rgba(203,213,225,0.07);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .features-visual::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(203,213,225,0.05), transparent 70%);
+    }
+    .visual-inner { text-align: center; position: relative; z-index: 1; }
+    .visual-icon { font-size: 6rem; display: block; margin-bottom: 24px;
+      filter: drop-shadow(0 0 40px rgba(203,213,225,0.13));
+      animation: float 4s ease-in-out infinite;
+    }
+    .visual-tag {
+      display: inline-block; border: 1px solid rgba(203,213,225,0.13);
+      padding: 8px 24px; font-size: 0.6rem; letter-spacing: 4px; color: var(--accent);
+    }
+    .corner-deco {
+      position: absolute; width: 40px; height: 40px;
+      border-color: rgba(203,213,225,0.13); border-style: solid;
+    }
+    .corner-deco.tl { top: 16px; left: 16px; border-width: 1px 0 0 1px; }
+    .corner-deco.tr { top: 16px; right: 16px; border-width: 1px 1px 0 0; }
+    .corner-deco.bl { bottom: 16px; left: 16px; border-width: 0 0 1px 1px; }
+    .corner-deco.br { bottom: 16px; right: 16px; border-width: 0 1px 1px 0; }
+
+    /* TESTIMONIALS */
+    .testimonials { padding: 120px 60px; background: var(--dark); }
+    .testimonials-header { text-align: center; margin-bottom: 70px; }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    }
+    .testimonial-card {
+      background: var(--dark2); padding: 48px 40px;
+      border: 1px solid rgba(255,255,255,0.04);
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '"';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem; color: rgba(203,213,225,0.12);
+      position: absolute; top: 20px; right: 30px;
+      line-height: 1;
+    }
+    .stars { color: var(--accent); font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 20px; }
+    .testimonial-text {
+      font-size: 0.7rem; color: rgba(245,242,236,0.6);
+      line-height: 2.1; font-weight: 200; letter-spacing: 0.5px;
+      margin-bottom: 32px; font-style: italic;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 14px; }
+    .author-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-dim), var(--dark3));
+      border: 1px solid rgba(203,213,225,0.13);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+    }
+    .author-name {
+      font-size: 0.65rem; letter-spacing: 2px; font-weight: 300; color: var(--white);
+    }
+    .author-loc { font-size: 0.55rem; letter-spacing: 2px; color: var(--gray); margin-top: 3px; }
+
+    /* CTA BANNER */
+    .cta-banner {
+      padding: 120px 60px; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(203,213,225,0.07), transparent 70%);
+    }
+    .cta-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 400; letter-spacing: 6px; margin-bottom: 20px;
+    }
+    .cta-title em { font-style: italic; color: var(--accent); }
+    .cta-sub {
+      font-size: 0.7rem; letter-spacing: 2px; color: var(--gray);
+      font-weight: 200; margin-bottom: 50px;
+    }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; }
+    .btn-outline {
+      background: transparent; border: 1px solid rgba(245,242,236,0.2);
+      color: var(--white); padding: 16px 40px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem; letter-spacing: 4px; font-weight: 200;
+      cursor: none; transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark); border-top: 1px solid rgba(203,213,225,0.07);
+      padding: 70px 60px 40px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 60px; margin-bottom: 60px;
+    }
+    .footer-brand .nav-logo { font-size: 1.4rem; display: block; margin-bottom: 20px; }
+    .footer-brand p {
+      font-size: 0.65rem; color: var(--gray); line-height: 2;
+      font-weight: 200; letter-spacing: 0.5px;
+    }
+    .footer-col h4 {
+      font-size: 0.6rem; letter-spacing: 4px; color: var(--accent);
+      font-weight: 300; margin-bottom: 24px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col a {
+      text-decoration: none; font-size: 0.65rem; color: var(--gray);
+      letter-spacing: 1px; font-weight: 200; transition: color 0.3s;
+    }
+    .footer-col a:hover { color: var(--accent); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 28px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy { font-size: 0.58rem; letter-spacing: 2px; color: rgba(136,136,136,0.5); font-weight: 200; }
+    .footer-socials { display: flex; gap: 24px; }
+    .footer-socials a {
+      font-size: 0.6rem; letter-spacing: 2px; color: var(--gray);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .footer-socials a:hover { color: var(--accent); }
+
+    /* WHATSAPP FLOAT BUTTON */
+    .wa-float {
+      position: fixed; bottom: 110px; right: 40px; z-index: 200;
+      background: transparent; color: var(--accent);
+      border: 1.5px solid var(--accent);
+      width: 56px; height: 56px; border-radius: 50%;
+      cursor: none; text-decoration: none;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 0 transparent;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .wa-float svg { stroke: var(--accent); fill: var(--accent); transition: stroke 0.3s, fill 0.3s; }
+    .wa-float:hover {
+      transform: scale(1.1);
+      border-color: var(--accent-light);
+      box-shadow: 0 0 18px rgba(203,213,225,0.18);
+    }
+    .wa-float:hover svg { stroke: var(--accent-light); fill: var(--accent-light); }
+    .wa-tooltip {
+      position: absolute; right: 68px; white-space: nowrap;
+      background: var(--dark3); border: 1px solid rgba(203,213,225,0.15);
+      color: var(--white); font-size: 0.6rem; letter-spacing: 2px;
+      padding: 8px 14px; pointer-events: none;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .wa-float:hover .wa-tooltip { opacity: 1; }
+
+    /* CART BUTTON */
+    .cart-float {
+      position: fixed; bottom: 40px; right: 40px; z-index: 200;
+      background: var(--accent); color: var(--black); border: none;
+      width: 56px; height: 56px; border-radius: 50%;
+      font-size: 1.3rem; cursor: none;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 30px rgba(203,213,225,0.16);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .cart-float:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(203,213,225,0.18); }
+    .cart-badge {
+      position: absolute; top: -4px; right: -4px;
+      background: var(--black); color: var(--accent);
+      font-size: 0.55rem; letter-spacing: 0; font-family: 'Outfit', sans-serif;
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--accent);
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 110px; right: 40px; z-index: 300;
+      background: var(--dark3); border: 1px solid rgba(203,213,225,0.13);
+      padding: 16px 24px; transform: translateY(20px);
+      opacity: 0; transition: all 0.4s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast p { font-size: 0.65rem; letter-spacing: 2px; color: var(--accent); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeLeft {
+      from { opacity: 0; transform: translateY(-50%) translateX(40px); }
+      to { opacity: 1; transform: translateY(-50%) translateX(0); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 20px 28px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 28px 60px; }
+      .hero-device { display: none; }
+      .products, .features, .testimonials, .cta-banner { padding: 80px 28px; }
+      .stats { padding: 60px 28px; grid-template-columns: repeat(2, 1fr); }
+      .products-grid, .testimonials-grid { grid-template-columns: 1fr; }
+      .product-card.featured { grid-row: span 1; }
+      .features-grid { grid-template-columns: 1fr; gap: 40px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .products-header { flex-direction: column; gap: 20px; align-items: flex-start; }
+    }
+
+    /* REVIEWS LOADING */
+    .reviews-loading {
+      grid-column: 1 / -1; display: flex; justify-content: center;
+      align-items: center; gap: 10px; padding: 60px 0;
+    }
+    .reviews-loading-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); opacity: 0.3;
+      animation: dotPulse 1.2s ease-in-out infinite;
+    }
+    .reviews-loading-dot:nth-child(2) { animation-delay: 0.2s; }
+    .reviews-loading-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotPulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.4); }
+    }
+    .reviews-empty {
+      grid-column: 1 / -1; text-align: center; padding: 60px 0;
+      font-size: 0.7rem; letter-spacing: 3px; color: var(--gray); font-weight: 200;
+    }
+
+    /* REVIEW FORM */
+    .review-form-wrap {
+      margin-top: 70px; border-top: 1px solid rgba(203,213,225,0.07);
+      padding-top: 70px;
+    }
+    .review-form-inner {
+      max-width: 660px; margin: 0 auto; text-align: center;
+    }
+    .review-form-sub {
+      font-size: 0.68rem; letter-spacing: 1px; color: var(--gray);
+      font-weight: 200; margin-bottom: 40px;
+    }
+    .review-form-fields { text-align: left; }
+    .review-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .review-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .review-field label {
+      font-size: 0.55rem; letter-spacing: 4px; color: var(--accent); font-weight: 400;
+    }
+    .review-field input,
+    .review-field textarea {
+      background: var(--dark2); border: 1px solid rgba(255,255,255,0.07);
+      color: var(--white); font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem; font-weight: 200; letter-spacing: 0.5px;
+      padding: 14px 16px; outline: none; resize: none;
+      transition: border-color 0.3s;
+    }
+    .review-field input:focus,
+    .review-field textarea:focus { border-color: rgba(249,115,22,0.4); }
+    .review-field input::placeholder,
+    .review-field textarea::placeholder { color: var(--gray); opacity: 0.5; }
+    .review-char-count {
+      font-size: 0.55rem; letter-spacing: 2px; color: var(--gray);
+      text-align: right; margin-top: -12px;
+    }
+
+    /* STAR PICKER */
+    .star-picker { display: flex; gap: 6px; }
+    .star-opt {
+      font-size: 1.5rem; color: rgba(255,255,255,0.15);
+      cursor: none; transition: color 0.15s, transform 0.15s;
+      line-height: 1;
+    }
+    .star-opt.active,
+    .star-opt.hovered { color: var(--accent); transform: scale(1.2); }
+
+    /* SUBMIT */
+    .review-submit {
+      width: 100%; margin-top: 8px; justify-content: center;
+    }
+    .review-notice {
+      text-align: center; font-size: 0.62rem; letter-spacing: 2px;
+      margin-top: 14px; min-height: 20px; font-weight: 200;
+    }
+    .review-notice.ok  { color: var(--accent); }
+    .review-notice.err { color: #f87171; }
+
+    /* REVIEW CARD (rendered dynamically) */
+    .testimonial-card.new-card {
+      animation: cardIn 0.5s ease forwards;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* PRODUCT IMAGE UPLOADER */
+    .product-img-wrap {
+      position: relative; width: 100%; aspect-ratio: 4/3;
+      margin-bottom: 28px; overflow: hidden;
+      background: var(--dark3);
+      border: 1px dashed rgba(255,255,255,0.1);
+      cursor: none;
+    }
+    .product-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform 0.5s ease;
+    }
+    .product-card:hover .product-img-wrap img { transform: scale(1.04); }
+    .product-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+      color: var(--gray); transition: background 0.3s;
+    }
+    .product-img-placeholder:hover { background: rgba(255,255,255,0.03); }
+    .product-img-placeholder svg { opacity: 0.35; transition: opacity 0.3s; }
+    .product-img-placeholder:hover svg { opacity: 0.65; }
+    .product-img-placeholder span {
+      font-size: 0.55rem; letter-spacing: 3px; font-weight: 300;
+      opacity: 0.5;
+    }
+    .product-img-input { display: none; }
+    .product-img-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .product-img-wrap:hover .product-img-overlay { opacity: 1; }
+    .product-img-change {
+      font-size: 0.55rem; letter-spacing: 3px; color: var(--white);
+      border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px;
+      background: transparent; cursor: none; font-family: 'Outfit', sans-serif;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .product-img-change:hover { border-color: var(--accent); color: var(--accent); }
+    /* drag-over highlight */
+    .product-img-wrap.drag-over {
+      border-color: var(--accent);
+      background: rgba(var(--accent), 0.05);
+    }
+  </style>
+
+  <!-- Firebase CDN — requerido para el sistema de reseñas -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+
+  <!-- Custom cursor -->
+  <div class="cursor">
+    <div class="cursor-dot" id="dot"></div>
+    <div class="cursor-ring" id="ring"></div>
+  </div>
+
+  <!-- ✏️ EDITAR: Nombre de la tienda (aparece en el logo y el footer) -->
+  <nav>
+    <a href="#" class="nav-logo">NOETHER <span>TECH</span></a>
+    <ul class="nav-links">
+      <li><a href="#productos">PRODUCTOS</a></li>
+      <li><a href="#nosotros">NOSOTROS</a></li>
+      <li><a href="#garantia">GARANTÍA</a></li>
+      <li><a href="#contacto">CONTACTO</a></li>
+    </ul>
+    <!-- ✏️ EDITAR: Texto del botón del nav -->
+    <button class="nav-cta" onclick="openWhatsApp('Hola! Quiero consultar sobre sus productos.')">CONSULTAR</button>
+  </nav>
+
+  <!-- ✏️ EDITAR: Sección principal (hero) — título, subtítulo y texto del badge -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-line"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">NUEVA COLECCIÓN 2025</p>
+      <h1 class="hero-title">
+        Tecnología<br><em>de otro nivel</em>
+      </h1>
+      <p class="hero-subtitle">
+        Dispositivos premium seleccionados con precisión. Cada producto, una experiencia extraordinaria. Envíos a todo el país.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">VER CATÁLOGO</button>
+        <button class="btn-secondary" onclick="document.getElementById('garantia').scrollIntoView({behavior:'smooth'})">NUESTRA GARANTÍA</button>
+      </div>
+    </div>
+    <div class="hero-device">
+      <div class="device-glow"></div>
+      <div class="device-frame">
+        <div class="device-screen">
+          <!-- Imagen hero del dispositivo destacado — clic para subir foto -->
+          <div class="device-img-wrap" id="heroImgWrap"
+               onclick="triggerHeroImg()"
+               ondragover="event.preventDefault(); document.getElementById('heroImgWrap').style.outline='1px solid var(--accent)'"
+               ondragleave="document.getElementById('heroImgWrap').style.outline=''"
+               ondrop="handleHeroDrop(event)">
+            <div class="device-img-placeholder" id="heroImgPlaceholder">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21,15 16,10 5,21"/>
+              </svg>
+              <span>SUBIR FOTO</span>
+              <span>DEL PRODUCTO</span>
+            </div>
+            <img id="heroImgPreview" src="" alt="" style="display:none" />
+            <div class="device-img-overlay">
+              <button class="device-img-change" onclick="event.stopPropagation();triggerHeroImg()">CAMBIAR</button>
+            </div>
+            <input type="file" id="heroImgInput" accept="image/*"
+                   style="display:none" onchange="handleHeroImgUpload(event)" />
+          </div>
+
+          <!-- ✏️ EDITAR: Texto y specs del dispositivo destacado -->
+          <span class="device-label" style="margin-top:14px">ÚLTIMA LÍNEA</span>
+          <div class="device-bar" style="margin:10px 0 12px"></div>
+          <div class="device-specs">
+            <div class="spec"><div class="spec-val">6.7"</div><div class="spec-key">PANTALLA</div></div>
+            <div class="spec"><div class="spec-val">200MP</div><div class="spec-key">CÁMARA</div></div>
+            <div class="spec"><div class="spec-val">5G</div><div class="spec-key">RED</div></div>
+          </div>
+          <span class="device-sublabel" style="margin-top:8px">DISPONIBLE EN STOCK</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">ENVÍO GRATIS <span class="marquee-sep">✦</span></span>
+      <span class="marquee-item">GARANTÍA OFICIAL <span class="marquee-sep">✦</span></span>
+      <span class="marquee-item">PAGO EN CUOTAS <span class="marquee-sep">✦</span></span>
+      <span class="marquee-item">SOPORTE 24/7 <span class="marquee-sep">✦</span></span>
+      <span class="marquee-item">PRODUCTOS ORIGINALES <span class="marquee-sep">✦</span></span>
+      <span class="marquee-item">ENVÍO GRATIS <span class="marquee-sep">✦</span></span>
+      <span class="marquee-item">GARANTÍA OFICIAL <span class="marquee-sep">✦</span></span>
+      <span class="marquee-item">PAGO EN CUOTAS <span class="marquee-sep">✦</span></span>
+      <span class="marquee-item">SOPORTE 24/7 <span class="marquee-sep">✦</span></span>
+      <span class="marquee-item">PRODUCTOS ORIGINALES <span class="marquee-sep">✦</span></span>
+    </div>
+  </div>
+
+  <!-- ✏️ EDITAR: CATÁLOGO DE PRODUCTOS
+       Para cada producto podés cambiar:
+         • product-emoji  → el ícono (o reemplazalo por una etiqueta <img>)
+         • product-name   → nombre del producto
+         • product-model  → modelo / variante
+         • product-desc   → descripción breve
+         • product-price  → precio actual  (ej: $899.999)
+         • product-price-old → precio tachado / precio original
+         • product-features li → características (podés agregar o quitar)
+       Para agregar más productos, copiá un bloque <div class="product-card">
+  -->
+  <section class="products" id="productos">
+    <div class="products-header reveal">
+      <div>
+        <div class="section-label">CATÁLOGO</div>
+        <h2 class="section-title">Productos<br><em style="font-family:'Bebas Neue',sans-serif;font-style:italic;color:var(--accent)">seleccionados</em></h2>
+      </div>
+      <p>Cada dispositivo pasa por un riguroso control de calidad antes de llegar a tus manos.</p>
+    </div>
+    <div class="products-grid">
+
+      <!-- Featured -->
+      <div class="product-card featured reveal">
+        <span class="product-badge">MÁS VENDIDO</span>
+        <div class="product-img-wrap" id="imgWrap_p1" onclick="triggerImgUpload('p1')" ondragover="handleDragOver(event,'p1')" ondragleave="handleDragLeave('p1')" ondrop="handleDrop(event,'p1')">
+          <div class="product-img-placeholder" id="imgPlaceholder_p1">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21,15 16,10 5,21"/>
+            </svg>
+            <span>SUBIR FOTO DEL PRODUCTO</span>
+            <span style="font-size:0.48rem;opacity:0.35">O ARRASTRÁ AQUÍ</span>
+          </div>
+          <img id="imgPreview_p1" src="" alt="" style="display:none" />
+          <div class="product-img-overlay">
+            <button class="product-img-change" onclick="event.stopPropagation();triggerImgUpload('p1')">CAMBIAR FOTO</button>
+          </div>
+          <input type="file" class="product-img-input" id="imgInput_p1" accept="image/*" onchange="handleImgUpload(event,'p1')" />
+        </div>
+        <h3 class="product-name">Smartphone Pro</h3>
+        <p class="product-model">SERIE ULTRA — 512GB</p>
+        <p class="product-desc">La cámara más avanzada del mercado. Pantalla AMOLED 6.7" con refresh de 120Hz. Batería de 5000mAh con carga rápida de 65W.</p>
+        <div class="product-price-row">
+          <span class="product-price">$899.999</span>
+          <span class="product-price-old">$1.100.000</span>
+        </div>
+        <ul class="product-features">
+          <li>Procesador Snapdragon 8 Gen 3</li>
+          <li>Cámara principal 200MP + OIS</li>
+          <li>5G / WiFi 7 / Bluetooth 5.3</li>
+          <li>Resistencia IP68</li>
+        </ul>
+        <button class="btn-card" onclick="addToCart('Smartphone Pro')">AGREGAR AL CARRITO</button>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap" id="imgWrap_p2" onclick="triggerImgUpload('p2')" ondragover="handleDragOver(event,'p2')" ondragleave="handleDragLeave('p2')" ondrop="handleDrop(event,'p2')">
+          <div class="product-img-placeholder" id="imgPlaceholder_p2">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21,15 16,10 5,21"/>
+            </svg>
+            <span>SUBIR FOTO DEL PRODUCTO</span>
+            <span style="font-size:0.48rem;opacity:0.35">O ARRASTRÁ AQUÍ</span>
+          </div>
+          <img id="imgPreview_p2" src="" alt="" style="display:none" />
+          <div class="product-img-overlay">
+            <button class="product-img-change" onclick="event.stopPropagation();triggerImgUpload('p2')">CAMBIAR FOTO</button>
+          </div>
+          <input type="file" class="product-img-input" id="imgInput_p2" accept="image/*" onchange="handleImgUpload(event,'p2')" />
+        </div>
+        <h3 class="product-name">Smartwatch Elite</h3>
+        <p class="product-model">EDICIÓN TITANIO</p>
+        <p class="product-desc">Monitoreo de salud en tiempo real. GPS integrado. Autonomía de 14 días.</p>
+        <div class="product-price-row">
+          <span class="product-price">$299.999</span>
+          <span class="product-price-old">$380.000</span>
+        </div>
+        <ul class="product-features">
+          <li>Pantalla AMOLED 1.5" Always-On</li>
+          <li>GPS + SpO2 + ECG</li>
+          <li>Resistencia 5ATM</li>
+        </ul>
+        <button class="btn-card" onclick="addToCart('Smartwatch Elite')">AGREGAR AL CARRITO</button>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap" id="imgWrap_p3" onclick="triggerImgUpload('p3')" ondragover="handleDragOver(event,'p3')" ondragleave="handleDragLeave('p3')" ondrop="handleDrop(event,'p3')">
+          <div class="product-img-placeholder" id="imgPlaceholder_p3">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21,15 16,10 5,21"/>
+            </svg>
+            <span>SUBIR FOTO DEL PRODUCTO</span>
+            <span style="font-size:0.48rem;opacity:0.35">O ARRASTRÁ AQUÍ</span>
+          </div>
+          <img id="imgPreview_p3" src="" alt="" style="display:none" />
+          <div class="product-img-overlay">
+            <button class="product-img-change" onclick="event.stopPropagation();triggerImgUpload('p3')">CAMBIAR FOTO</button>
+          </div>
+          <input type="file" class="product-img-input" id="imgInput_p3" accept="image/*" onchange="handleImgUpload(event,'p3')" />
+        </div>
+        <h3 class="product-name">Auriculares NC</h3>
+        <p class="product-model">NOISE CANCELLING PRO</p>
+        <p class="product-desc">Cancelación activa de ruido de última generación. 40hs de autonomía total.</p>
+        <div class="product-price-row">
+          <span class="product-price">$189.999</span>
+          <span class="product-price-old">$240.000</span>
+        </div>
+        <ul class="product-features">
+          <li>ANC adaptativo en 3 niveles</li>
+          <li>Audio espacial personalizado</li>
+          <li>Carga rápida: 10min = 3hs</li>
+        </ul>
+        <button class="btn-card" onclick="addToCart('Auriculares NC')">AGREGAR AL CARRITO</button>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap" id="imgWrap_p4" onclick="triggerImgUpload('p4')" ondragover="handleDragOver(event,'p4')" ondragleave="handleDragLeave('p4')" ondrop="handleDrop(event,'p4')">
+          <div class="product-img-placeholder" id="imgPlaceholder_p4">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21,15 16,10 5,21"/>
+            </svg>
+            <span>SUBIR FOTO DEL PRODUCTO</span>
+            <span style="font-size:0.48rem;opacity:0.35">O ARRASTRÁ AQUÍ</span>
+          </div>
+          <img id="imgPreview_p4" src="" alt="" style="display:none" />
+          <div class="product-img-overlay">
+            <button class="product-img-change" onclick="event.stopPropagation();triggerImgUpload('p4')">CAMBIAR FOTO</button>
+          </div>
+          <input type="file" class="product-img-input" id="imgInput_p4" accept="image/*" onchange="handleImgUpload(event,'p4')" />
+        </div>
+        <h3 class="product-name">Laptop Ultra</h3>
+        <p class="product-model">14" — CHIP M3 PRO</p>
+        <p class="product-desc">Rendimiento profesional en un cuerpo ultradelgado. El compañero perfecto para trabajo y creación.</p>
+        <div class="product-price-row">
+          <span class="product-price">$1.499.999</span>
+          <span class="product-price-old">$1.800.000</span>
+        </div>
+        <ul class="product-features">
+          <li>Pantalla Liquid Retina XDR</li>
+          <li>32GB RAM / 1TB SSD</li>
+          <li>Batería 22 horas</li>
+        </ul>
+        <button class="btn-card" onclick="addToCart('Laptop Ultra')">AGREGAR AL CARRITO</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ✏️ EDITAR: Estadísticas animadas — cambiá los valores en data-target="" -->
+  <div class="stats">
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="12000">0</span>
+      <span class="stat-label">CLIENTES SATISFECHOS</span>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="500">0</span>
+      <span class="stat-label">PRODUCTOS EN STOCK</span>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num">5★</span>
+      <span class="stat-label">CALIFICACIÓN PROMEDIO</span>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num" data-target="8">0</span>
+      <span class="stat-label">AÑOS DE EXPERIENCIA</span>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="features" id="garantia">
+    <div class="reveal">
+      <div class="section-label">POR QUÉ ELEGIRNOS</div>
+      <h2 class="section-title">La diferencia<br><em style="font-family:'Bebas Neue',sans-serif;font-style:italic;color:var(--accent)">es visible</em></h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-list">
+        <div class="feature-item reveal">
+          <p class="feature-num">01</p>
+          <h3 class="feature-title">Productos 100% Originales</h3>
+          <p class="feature-text">Todos nuestros productos son originales con garantía oficial. Trabajamos directamente con distribuidores autorizados.</p>
+        </div>
+        <div class="feature-item reveal">
+          <p class="feature-num">02</p>
+          <h3 class="feature-title">Garantía Extendida</h3>
+          <p class="feature-text">Ofrecemos garantía de 12 meses en todos los productos. Soporte técnico especializado incluido sin costo adicional.</p>
+        </div>
+        <div class="feature-item reveal">
+          <p class="feature-num">03</p>
+          <h3 class="feature-title">Envío Express a Todo el País</h3>
+          <p class="feature-text">Despachamos el mismo día hábil para compras antes de las 14hs. Seguimiento en tiempo real de tu pedido.</p>
+        </div>
+        <div class="feature-item reveal">
+          <p class="feature-num">04</p>
+          <h3 class="feature-title">Hasta 24 Cuotas sin Interés</h3>
+          <p class="feature-text">Financiación disponible con todas las tarjetas de crédito del país. Aprobación inmediata online.</p>
+        </div>
+      </div>
+      <div class="features-visual reveal">
+        <div class="corner-deco tl"></div>
+        <div class="corner-deco tr"></div>
+        <div class="corner-deco bl"></div>
+        <div class="corner-deco br"></div>
+        <div class="visual-inner">
+          <span class="visual-icon">🛡️</span>
+          <div class="visual-tag">GARANTÍA CERTIFICADA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEÑAS DINÁMICAS con base de datos persistente compartida
+       Todos los visitantes ven y pueden dejar reseñas en tiempo real -->
+  <section class="testimonials" id="nosotros">
+    <div class="testimonials-header reveal">
+      <div class="section-label" style="justify-content:center">RESEÑAS</div>
+      <h2 class="section-title">Lo que dicen<br><em style="font-family:'Bebas Neue',sans-serif;color:var(--accent)">nuestros clientes</em></h2>
+    </div>
+
+    <div class="testimonials-grid" id="reviewsGrid">
+      <div class="reviews-loading" id="reviewsLoading">
+        <span class="reviews-loading-dot"></span>
+        <span class="reviews-loading-dot"></span>
+        <span class="reviews-loading-dot"></span>
+      </div>
+    </div>
+
+    <div class="review-form-wrap reveal">
+      <div class="review-form-inner">
+        <div class="section-label" style="margin-bottom:8px">DEJÁ TU RESEÑA</div>
+        <p class="review-form-sub">¿Ya compraste con nosotros? Contanos tu experiencia</p>
+        <div class="review-form-fields">
+          <div class="review-field-row">
+            <div class="review-field">
+              <label>NOMBRE</label>
+              <input type="text" id="reviewName" placeholder="Tu nombre" maxlength="40" />
+            </div>
+            <div class="review-field">
+              <label>CIUDAD</label>
+              <input type="text" id="reviewCity" placeholder="Tu ciudad" maxlength="30" />
+            </div>
+          </div>
+          <div class="review-field">
+            <label>CALIFICACIÓN</label>
+            <div class="star-picker" id="starPicker">
+              <span class="star-opt" data-val="1">★</span>
+              <span class="star-opt" data-val="2">★</span>
+              <span class="star-opt" data-val="3">★</span>
+              <span class="star-opt" data-val="4">★</span>
+              <span class="star-opt" data-val="5">★</span>
+            </div>
+          </div>
+          <div class="review-field">
+            <label>TU EXPERIENCIA</label>
+            <textarea id="reviewText" placeholder="Contanos cómo fue tu compra..." maxlength="400" rows="4"></textarea>
+            <span class="review-char-count" id="charCount">0 / 400</span>
+          </div>
+          <button class="btn-primary review-submit" id="reviewSubmit" onclick="submitReview()">PUBLICAR RESEÑA</button>
+          <p class="review-notice" id="reviewNotice"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✏️ EDITAR: Sección de llamada a la acción final — texto y subtítulo -->
+  <section class="cta-banner" id="contacto">
+    <div class="reveal">
+      <h2 class="cta-title">¿Listo para tu<br><em>próximo dispositivo?</em></h2>
+      <p class="cta-sub">ENVÍO GRATIS EN COMPRAS MAYORES A $200.000 · CUOTAS SIN INTERÉS</p>
+      <div class="cta-actions">
+        <button class="btn-primary" onclick="document.getElementById('productos').scrollIntoView({behavior:'smooth'})">VER TODOS LOS PRODUCTOS</button>
+        <button class="btn-outline" onclick="openWhatsApp('Hola! Quiero hacer una consulta.')">CONTACTAR POR WHATSAPP</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ✏️ EDITAR: Footer — descripción de la tienda, links y redes sociales -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">NOETHER <span>TECH</span></a>
+        <p>Tecnología premium al alcance de todos. Tu tienda de electrónica de confianza desde 2016.</p>
+      </div>
+      <div class="footer-col">
+        <h4>PRODUCTOS</h4>
+        <ul>
+          <li><a href="#">Smartphones</a></li>
+          <li><a href="#">Laptops</a></li>
+          <li><a href="#">Smartwatches</a></li>
+          <li><a href="#">Audio</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>INFORMACIÓN</h4>
+        <ul>
+          <li><a href="#">Sobre Nosotros</a></li>
+          <li><a href="#">Garantías</a></li>
+          <li><a href="#">Envíos</a></li>
+          <li><a href="#">Devoluciones</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>CONTACTO</h4>
+        <ul>
+          <!-- ✏️ EDITAR: Links de redes sociales -->
+          <li><a href="#" onclick="openWhatsApp('Hola!')">WhatsApp</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Email</a></li>
+          <li><a href="#">Sucursales</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 NOETHER TECH — TODOS LOS DERECHOS RESERVADOS</p>
+      <div class="footer-socials">
+        <!-- ✏️ EDITAR: Links de tus redes sociales -->
+        <a href="#">IG</a>
+        <a href="#" onclick="openWhatsApp('Hola!')">WA</a>
+        <a href="#">FB</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Botón flotante de WhatsApp (abre chat directo con tu número) -->
+  <a class="wa-float" id="waFloat" href="#" onclick="openWhatsApp('Hola! Quiero consultar sobre sus productos.'); return false;" title="Escribinos por WhatsApp">
+    <!-- Logo oficial de WhatsApp en SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="26" height="26" fill="white">
+      <path d="M4.868 43.303l2.694-9.835a19.038 19.038 0 01-2.548-9.503C5.02 13.16 13.88 4.5 24.727 4.5a19.135 19.135 0 0113.594 5.634 19.15 19.15 0 015.634 13.594c-.004 10.848-8.864 19.51-19.712 19.51h-.008a19.12 19.12 0 01-9.141-2.325L4.868 43.303zm10.447-6.032l.58.345a15.894 15.894 0 008.119 2.226h.006c8.771 0 15.91-7.137 15.914-15.91a15.877 15.877 0 00-4.671-11.279 15.864 15.864 0 00-11.243-4.667c-8.779 0-15.916 7.136-15.92 15.907a15.88 15.88 0 002.443 8.481l.38.604-1.617 5.903 6.009-1.61zm9.123-24.604"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M19.268 15.678c-.346-.77-.71-.786-1.038-.8-.269-.012-.577-.011-.885-.011a1.694 1.694 0 00-1.231.578c-.423.462-1.615 1.578-1.615 3.847s1.654 4.464 1.885 4.772c.231.308 3.196 5.11 7.9 6.962 3.907 1.541 4.704 1.234 5.55 1.157.847-.077 2.731-1.117 3.116-2.196.384-1.079.384-2.004.269-2.196-.115-.192-.423-.307-.885-.538-.462-.231-2.731-1.348-3.154-1.502-.424-.154-.731-.231-1.038.231-.308.461-1.192 1.502-1.461 1.81-.269.307-.539.346-1 .115-.462-.231-1.95-.719-3.716-2.292-1.373-1.225-2.3-2.737-2.569-3.198-.269-.462-.028-.712.202-.941.207-.207.461-.538.692-.808.23-.269.307-.461.461-.77.154-.307.077-.577-.038-.808-.116-.23-1.016-2.509-1.445-3.412z"/>
+    </svg>
+    <span class="wa-tooltip">ESCRIBINOS</span>
+  </a>
+
+  <!-- Cart Float -->
+  <button class="cart-float" onclick="toggleCart()">
+    🛒
+    <span class="cart-badge" id="cartCount">0</span>
+  </button>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"><p id="toastMsg">✦ PRODUCTO AGREGADO AL CARRITO</p></div>
+
+  <script>
+    // ============================================================
+    // ✏️ EDITAR: Tu número de WhatsApp (con código de país, sin + ni espacios)
+    const WHATSAPP_NUMBER = '5493413692856';
+    // ============================================================
+
+    // Función para abrir WhatsApp con un mensaje predefinido
+    // Se usa en todos los botones de contacto de la página
+    function openWhatsApp(message) {
+      const encodedMsg = encodeURIComponent(message);
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMsg}`, '_blank');
+    }
+
+    // Cursor personalizado
+    const dot = document.getElementById('dot');
+    const ring = document.getElementById('ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animCursor() {
+      dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), 80);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Cart
+    let cartItems = 0;
+    function addToCart(name = 'Producto') {
+      cartItems++;
+      document.getElementById('cartCount').textContent = cartItems;
+      const msg = document.getElementById('toastMsg');
+      msg.textContent = `✦ ${name.toUpperCase()} AGREGADO`;
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+    function toggleCart() {
+      addToCart('Ver carrito');
+    }
+
+    // Counter animation
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.target);
+      if (!target) return;
+      let count = 0;
+      const step = target / 60;
+      const interval = setInterval(() => {
+        count += step;
+        if (count >= target) { el.textContent = target.toLocaleString('es-AR') + '+'; clearInterval(interval); }
+        else el.textContent = Math.floor(count).toLocaleString('es-AR');
+      }, 25);
+    }
+    const statObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCounter(e.target);
+          statObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-num[data-target]').forEach(el => statObs.observe(el));
+
+    // ── REVIEWS SYSTEM — Firebase Firestore ─────────────────────────────────
+    // Reseñas guardadas en Firestore, visibles para todos los visitantes.
+
+    // Firebase se carga via CDN en el <head> — no necesitás npm ni build tools.
+    const firebaseConfig = {
+      apiKey:            "AIzaSyDDFgibxvA0Jp2h6lACmPs2_3UFdVHh608",
+      authDomain:        "noether-tech.firebaseapp.com",
+      projectId:         "noether-tech",
+      storageBucket:     "noether-tech.firebasestorage.app",
+      messagingSenderId: "774620244449",
+      appId:             "1:774620244449:web:f1c9571cf848556b9bcaa0"
+    };
+
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const reviewsCol = db.collection('reviews');
+
+    let selectedStars = 0;
+
+    // Reseñas semilla — se cargan en Firestore solo si la colección está vacía
+    const SEED_REVIEWS = [
+      { name: 'MARTINA G.', city: 'BUENOS AIRES', stars: 5,
+        text: 'Compré el smartphone y llegó en menos de 48hs. La calidad es exactamente la prometida. Sin dudas volvería a comprar.',
+        ts: firebase.firestore.Timestamp.fromMillis(Date.now() - 864e5 * 3) },
+      { name: 'RODRIGO P.', city: 'CÓRDOBA', stars: 5,
+        text: 'Excelente atención. Tuve una consulta técnica y me respondieron en menos de una hora. Los auriculares son increíbles.',
+        ts: firebase.firestore.Timestamp.fromMillis(Date.now() - 864e5 * 7) },
+      { name: 'SOFÍA L.', city: 'ROSARIO', stars: 5,
+        text: 'Compré la laptop en 12 cuotas, llegó sellada y con garantía. La mejor compra que hice en el año.',
+        ts: firebase.firestore.Timestamp.fromMillis(Date.now() - 864e5 * 12) },
+    ];
+
+    function starsHtml(n) {
+      return '★'.repeat(n) + '<span style="opacity:.2">' + '★'.repeat(5 - n) + '</span>';
+    }
+
+    function renderReviewCard(data, isNew = false) {
+      const initials = data.name.trim().charAt(0).toUpperCase();
+      const div = document.createElement('div');
+      div.className = 'testimonial-card' + (isNew ? ' new-card' : '');
+      div.innerHTML = `
+        <div class="stars">${starsHtml(data.stars)}</div>
+        <p class="testimonial-text">"${data.text}"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="font-size:.85rem;font-weight:400">${initials}</div>
+          <div>
+            <p class="author-name">${data.name}</p>
+            <p class="author-loc">${data.city}</p>
+          </div>
+        </div>`;
+      return div;
+    }
+
+    async function loadReviews() {
+      const grid = document.getElementById('reviewsGrid');
+      try {
+        const snapshot = await reviewsCol.orderBy('ts', 'desc').get();
+
+        if (snapshot.empty) {
+          // Primera vez — sembrar reseñas iniciales en Firestore
+          const batch = db.batch();
+          SEED_REVIEWS.forEach(r => batch.set(reviewsCol.doc(), r));
+          await batch.commit();
+          // Recargar tras sembrar
+          return loadReviews();
+        }
+
+        grid.innerHTML = '';
+        snapshot.forEach(doc => grid.appendChild(renderReviewCard(doc.data())));
+
+      } catch (err) {
+        console.error('Error cargando reseñas:', err);
+        grid.innerHTML = '<p class="reviews-empty">ERROR AL CARGAR RESEÑAS</p>';
+      }
+    }
+
+    async function submitReview() {
+      const name   = document.getElementById('reviewName').value.trim();
+      const city   = document.getElementById('reviewCity').value.trim();
+      const text   = document.getElementById('reviewText').value.trim();
+      const notice = document.getElementById('reviewNotice');
+      const btn    = document.getElementById('reviewSubmit');
+
+      notice.className = 'review-notice';
+      if (!name)            { notice.textContent = '✦ INGRESÁ TU NOMBRE';            notice.className += ' err'; return; }
+      if (!selectedStars)   { notice.textContent = '✦ SELECCIONÁ UNA CALIFICACIÓN';  notice.className += ' err'; return; }
+      if (text.length < 10) { notice.textContent = '✦ ESCRIBÍ AL MENOS 10 CARACTERES'; notice.className += ' err'; return; }
+
+      btn.textContent = 'PUBLICANDO...';
+      btn.disabled = true;
+
+      try {
+        const review = {
+          name: name.toUpperCase(),
+          city: city ? city.toUpperCase() : 'ARGENTINA',
+          stars: selectedStars,
+          text,
+          ts: firebase.firestore.Timestamp.now()
+        };
+
+        // Guardar en Firestore
+        await reviewsCol.add(review);
+
+        // Mostrar en la grilla sin recargar
+        const grid = document.getElementById('reviewsGrid');
+        grid.insertBefore(renderReviewCard(review, true), grid.firstChild);
+
+        // Limpiar formulario
+        document.getElementById('reviewName').value = '';
+        document.getElementById('reviewCity').value = '';
+        document.getElementById('reviewText').value = '';
+        document.getElementById('charCount').textContent = '0 / 400';
+        selectedStars = 0;
+        document.querySelectorAll('.star-opt').forEach(s => s.classList.remove('active'));
+
+        notice.textContent = '✦ ¡RESEÑA PUBLICADA! GRACIAS POR TU OPINIÓN';
+        notice.className = 'review-notice ok';
+
+      } catch (err) {
+        console.error('Error al publicar reseña:', err);
+        notice.textContent = '✦ ERROR AL PUBLICAR. INTENTÁ DE NUEVO.';
+        notice.className = 'review-notice err';
+      }
+
+      btn.textContent = 'PUBLICAR RESEÑA';
+      btn.disabled = false;
+    }
+
+    // Star picker + char counter
+    document.addEventListener('DOMContentLoaded', () => {
+      loadReviews();
+
+      const stars = document.querySelectorAll('.star-opt');
+      stars.forEach(s => {
+        s.addEventListener('mouseenter', () => {
+          const v = +s.dataset.val;
+          stars.forEach(x => x.classList.toggle('hovered', +x.dataset.val <= v));
+        });
+        s.addEventListener('mouseleave', () => {
+          stars.forEach(x => x.classList.remove('hovered'));
+        });
+        s.addEventListener('click', () => {
+          selectedStars = +s.dataset.val;
+          stars.forEach(x => x.classList.toggle('active', +x.dataset.val <= selectedStars));
+        });
+      });
+
+      const ta = document.getElementById('reviewText');
+      if (ta) ta.addEventListener('input', () => {
+        document.getElementById('charCount').textContent = ta.value.length + ' / 400';
+      });
+    });
+
+    // ── PRODUCT IMAGE UPLOADER ────────────────────────────────────────────────
+    // Images are saved in localStorage so they persist across page reloads.
+    // (shared storage only supports text — for true multi-user image sharing
+    //  you'd need a cloud image host like Cloudinary or Supabase Storage)
+
+    function triggerImgUpload(pid) {
+      document.getElementById('imgInput_' + pid).click();
+    }
+
+    function applyImage(pid, dataUrl) {
+      const preview = document.getElementById('imgPreview_' + pid);
+      const placeholder = document.getElementById('imgPlaceholder_' + pid);
+      preview.src = dataUrl;
+      preview.style.display = 'block';
+      placeholder.style.display = 'none';
+      try { localStorage.setItem('nt-img-' + pid, dataUrl); } catch(e) {}
+    }
+
+    function handleImgUpload(event, pid) {
+      const file = event.target.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = e => applyImage(pid, e.target.result);
+      reader.readAsDataURL(file);
+    }
+
+    function handleDragOver(event, pid) {
+      event.preventDefault();
+      document.getElementById('imgWrap_' + pid).classList.add('drag-over');
+    }
+    function handleDragLeave(pid) {
+      document.getElementById('imgWrap_' + pid).classList.remove('drag-over');
+    }
+    function handleDrop(event, pid) {
+      event.preventDefault();
+      handleDragLeave(pid);
+      const file = event.dataTransfer.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = e => applyImage(pid, e.target.result);
+      reader.readAsDataURL(file);
+    }
+
+    // Restore saved images on page load
+    ['p1','p2','p3','p4'].forEach(pid => {
+      try {
+        const saved = localStorage.getItem('nt-img-' + pid);
+        if (saved) applyImage(pid, saved);
+      } catch(e) {}
+    });
+
+    // ── HERO DEVICE IMAGE ─────────────────────────────────────────────────────
+    function triggerHeroImg() {
+      document.getElementById('heroImgInput').click();
+    }
+    function applyHeroImage(dataUrl) {
+      const preview = document.getElementById('heroImgPreview');
+      const placeholder = document.getElementById('heroImgPlaceholder');
+      preview.src = dataUrl;
+      preview.style.display = 'block';
+      placeholder.style.display = 'none';
+      document.getElementById('heroImgWrap').style.outline = '';
+      try { localStorage.setItem('nt-img-hero', dataUrl); } catch(e) {}
+    }
+    function handleHeroImgUpload(event) {
+      const file = event.target.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = e => applyHeroImage(e.target.result);
+      reader.readAsDataURL(file);
+    }
+    function handleHeroDrop(event) {
+      event.preventDefault();
+      document.getElementById('heroImgWrap').style.outline = '';
+      const file = event.dataTransfer.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = e => applyHeroImage(e.target.result);
+      reader.readAsDataURL(file);
+    }
+    // Restore on load
+    try {
+      const saved = localStorage.getItem('nt-img-hero');
+      if (saved) applyHeroImage(saved);
+    } catch(e) {}
+  </script>
+</body>
+</html>
