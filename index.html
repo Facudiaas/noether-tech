@@ -7,7 +7,7 @@
        NOETHER TECH — Página de ventas de electrónica premium
        ============================================================
        GUÍA RÁPIDA DE PERSONALIZACIÓN:
-       • Busca los comentarios "EDITAR:" para cada sección
+       • Busca los comentarios "✏️ EDITAR:" para cada sección
        • Productos y precios: sección id="productos"
        • Estadísticas: busca data-target=""
        • Colores: variables CSS en :root (--accent, --black, etc.)
@@ -16,22 +16,40 @@
   <title>NOETHER TECH — Electrónica Premium</title>
 
   <!--
-    FUENTES ACTUALES:
+    ✏️ FUENTES ACTUALES:
       · Display (títulos grandes): "Bebas Neue" — condensada, impacto máximo
       · UI (botones, etiquetas, nav): "Outfit" — geométrica moderna, muy legible
     Paletas y fuentes anteriores guardadas como comentarios en el CSS (:root).
   -->
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     /*
+      ✏️ PALETA DE COLORES ACTUAL: Carbón cálido + ámbar
+        --accent      → naranja ámbar
+        --accent-light → durazno suave
+        --accent-dim  → naranja quemado oscuro
+        --black       → fondo principal negro profundo
+        --dark/2/3    → capas de gris muy oscuro
+        --white       → blanco humo suave para textos
+
       Paletas anteriores (por si querés volver):
-      Dorada original:  --accent:#c9a84c; --accent-light:#e8cc80; --accent-dim:#7a6230; --black:#080808;
+        Dorada original:  --accent:#c9a84c; --accent-light:#e8cc80; --accent-dim:#7a6230; --black:#080808;
+        Teal/cian:        --accent:#4fd1c5; --accent-light:#81e6d9; --accent-dim:#2c7a73; --black:#060810;
+        Carmesí:          --accent:#e63946; --accent-light:#ff6b74; --accent-dim:#7a1a21; --black:#080808;
+        Violeta:          --accent:#a855f7; --accent-light:#d8b4fe; --accent-dim:#581c87; --black:#09090b;
+    */
+    /*
       PALETA ACTIVA: PLATA
+      Para cambiar manualmente a otra paleta, reemplazá los valores de abajo:
+
+      DORADA:   --accent:#c9a84c; --accent-light:#e8cc80; --accent-dim:#7a6230; --black:#080808; --dark:#111111; --dark2:#1a1a1a; --dark3:#222222; --white:#f5f2ec; --gray:#888888;
+      CARMESÍ:  --accent:#e63946; --accent-light:#ff6b74; --accent-dim:#7a1a21; --black:#080808; --dark:#101010; --dark2:#181818; --dark3:#202020; --white:#f0eeeb; --gray:#888888;
       VIOLETA:  --accent:#a855f7; --accent-light:#d8b4fe; --accent-dim:#581c87; --black:#09090b; --dark:#111113; --dark2:#18181b; --dark3:#27272a; --white:#fafaf9; --gray:#a1a1aa;
       ÁMBAR:    --accent:#f97316; --accent-light:#fdba74; --accent-dim:#7c2d12; --black:#0c0a09; --dark:#1c1917; --dark2:#292524; --dark3:#44403c; --white:#fef3e8; --gray:#a8a29e;
       CIAN:     --accent:#06b6d4; --accent-light:#67e8f9; --accent-dim:#164e63; --black:#020617; --dark:#0c1024; --dark2:#121829; --dark3:#1a2235; --white:#ecfeff; --gray:#94a3b8;
+      ROSA:     --accent:#ec4899; --accent-light:#f9a8d4; --accent-dim:#831843; --black:#0d0010; --dark:#130018; --dark2:#1a0022; --dark3:#26002e; --white:#fdf2f8; --gray:#c084fc;
       ESMERALDA:--accent:#10b981; --accent-light:#6ee7b7; --accent-dim:#064e3b; --black:#030712; --dark:#0d1117; --dark2:#161b27; --dark3:#1e2636; --white:#f0fdf4; --gray:#94a3b8;
     */
     :root {
@@ -97,10 +115,10 @@
       backdrop-filter: blur(2px);
     }
     .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem; font-weight: 300; letter-spacing: 6px;
-      color: var(--accent); text-decoration: none;
+      text-decoration: none; display: flex; align-items: center;
+      line-height: 1;
     }
+    /* logo is now SVG — span rule kept for fallback */
     .nav-logo span { font-style: italic; }
     .nav-links { display: flex; gap: 40px; list-style: none; }
     .nav-links a {
@@ -540,7 +558,7 @@
       display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
       gap: 60px; margin-bottom: 60px;
     }
-    .footer-brand .nav-logo { font-size: 1.4rem; display: block; margin-bottom: 20px; }
+    .footer-brand .nav-logo { display: block; }
     .footer-brand p {
       font-size: 0.65rem; color: var(--gray); line-height: 2;
       font-weight: 200; letter-spacing: 0.5px;
@@ -812,7 +830,31 @@
 
   <!-- ✏️ EDITAR: Nombre de la tienda (aparece en el logo y el footer) -->
   <nav>
-    <a href="#" class="nav-logo">NOETHER <span>TECH</span></a>
+    <a href="#" class="nav-logo" aria-label="Noether Tech">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" height="58" style="display:block">
+        <defs>
+          <linearGradient id="lgNav" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f1f5f9"/>
+            <stop offset="100%" style="stop-color:#64748b"/>
+          </linearGradient>
+        </defs>
+        <!-- Rombo -->
+        <polygon points="36,5 64,40 36,75 8,40" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+        <polygon points="36,5 64,40 36,75 8,40" fill="#cbd5e1" fill-opacity="0.06"/>
+        <line x1="8" y1="40" x2="64" y2="40" stroke="#334155" stroke-width="0.8"/>
+        <!-- N -->
+        <text x="36" y="49" font-family="Cormorant Garamond,Georgia,serif" font-size="26"
+              font-weight="600" text-anchor="middle" fill="#e2e8f0">N</text>
+        <!-- Noether -->
+        <text x="80" y="33" font-family="Cormorant Garamond,Georgia,serif" font-size="22"
+              font-style="italic" font-weight="300" letter-spacing="3" fill="#f1f5f9">Noether</text>
+        <!-- Línea separadora -->
+        <line x1="80" y1="40" x2="316" y2="40" stroke="#334155" stroke-width="0.6"/>
+        <!-- TECH — más grande y visible -->
+        <text x="82" y="58" font-family="Outfit,sans-serif" font-size="11"
+              font-weight="300" letter-spacing="9" fill="#94a3b8">TECH</text>
+      </svg>
+    </a>
     <ul class="nav-links">
       <li><a href="#productos">PRODUCTOS</a></li>
       <li><a href="#nosotros">NOSOTROS</a></li>
@@ -1182,7 +1224,26 @@
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
-        <a href="#" class="nav-logo">NOETHER <span>TECH</span></a>
+        <a href="#" class="nav-logo" aria-label="Noether Tech">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" height="54" style="display:block">
+          <defs>
+            <linearGradient id="lgFoot" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#f1f5f9"/>
+              <stop offset="100%" style="stop-color:#64748b"/>
+            </linearGradient>
+          </defs>
+          <polygon points="36,5 64,40 36,75 8,40" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+          <polygon points="36,5 64,40 36,75 8,40" fill="#cbd5e1" fill-opacity="0.06"/>
+          <line x1="8" y1="40" x2="64" y2="40" stroke="#334155" stroke-width="0.8"/>
+          <text x="36" y="49" font-family="Cormorant Garamond,Georgia,serif" font-size="26"
+                font-weight="600" text-anchor="middle" fill="#e2e8f0">N</text>
+          <text x="80" y="33" font-family="Cormorant Garamond,Georgia,serif" font-size="22"
+                font-style="italic" font-weight="300" letter-spacing="3" fill="#f1f5f9">Noether</text>
+          <line x1="80" y1="40" x2="316" y2="40" stroke="#334155" stroke-width="0.6"/>
+          <text x="82" y="58" font-family="Outfit,sans-serif" font-size="11"
+                font-weight="300" letter-spacing="9" fill="#94a3b8">TECH</text>
+        </svg>
+    </a>
         <p>Tecnología premium al alcance de todos. Tu tienda de electrónica de confianza desde 2016.</p>
       </div>
       <div class="footer-col">
